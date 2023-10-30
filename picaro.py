@@ -100,9 +100,9 @@ for aline in a_file:
     for i in range(longestEWordSize, 0, -1):
         for w in e_words:
             if len(w) < i:
-                print(" ", end="")
+                print("  ", end="")
             else:
-                print(w[(i*-1)], end="")
+                print(w[(i*-1)], "", end="")
         print()
 
 
@@ -124,10 +124,10 @@ for aline in a_file:
                 val1 = a[i][j]
                 if val1 == 0:
                     # No link
-                    print(':', end="")
+                    print(': ', end="")
                 elif val1 == 1:
                     # Regular link
-                    print(u'\u001b[44m\u0020\u001b[0m', end="")
+                    print(u'\u001b[44m\u0020\u001b[0m ', end="")
                 elif val1 == 2:
                     # Link due to transitive closure
                     # Render as gray-shaded square
@@ -143,36 +143,36 @@ for aline in a_file:
                 if val1 == 0 and val2 == 0:
                     # Link not in a nor a2
                     # Empty grid box
-                    print(':', end="")
+                    print(': ', end="")
                 # Link in both a and a2
                 elif val1 > 0 and val2 > 0:
                     # Green box
                     if val1 == 1:
                         if val2 == 1:
-                            print(u'\u001b[42m\u001b[1m\u0020\u001b[0m', end="")
+                            print(u'\u001b[42m\u001b[1m\u0020\u001b[0m ', end="")
                         elif val2 == 2:
-                            print(u'\u001b[42m\u001b[30m2\u001b[0m', end="")
+                            print(u'\u001b[42m\u001b[30m2\u001b[0m ', end="")
                     elif val1 == 2:
                         if val2 == 1:
-                            print(u'\u001b[42m\u0020\u001b[0m', end="")
+                            print(u'\u001b[42m\u0020\u001b[0m ', end="")
                         elif val2 == 2:
-                            print(u'\u001b[42m\u001b[30m3\u001b[0m', end="")
+                            print(u'\u001b[42m\u001b[30m3\u001b[0m ', end="")
                 # Link in a2, but not a
                 elif val1 == 0 and val2 > 0:
                     if val2 == 1:
                         # Yellow box
-                        print(u'\u001b[1m\u001b[43m\u0020\u001b[0m', end="")
+                        print(u'\u001b[1m\u001b[43m\u0020\u001b[0m ', end="")
                     elif val2 == 2:
                         # Artificial link by transitive closure
-                        print(u'\u001b[43m\u001b[30m2\u001b[0m', end="")
+                        print(u'\u001b[43m\u001b[30m2\u001b[0m ', end="")
 
                 # Link in a, but not a2
                 elif val1 > 0 and val2 == 0:
                     if val1 == 1:
                         # Blue box
-                        print(u'\u001b[1m\u001b[44m\u0020\u001b[0m', end="")
+                        print(u'\u001b[1m\u001b[44m\u0020\u001b[0m ', end="")
                     elif val1 == 2:
-                        print(u'\u001b[44m\u001b[37m1\u001b[0m', end="")
+                        print(u'\u001b[44m\u001b[37m1\u001b[0m ', end="")
             print(f_words[i])
     nextDefault = sentenceNumber + 1
     sys.stdout.write("Enter next alignment number or 'q' to quit [%d]: " %(nextDefault))
