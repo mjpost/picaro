@@ -21,21 +21,19 @@ def main(args):
     for sentenceNumber, line in enumerate(sys.stdin):
         fields = line.rstrip().split("\t")
 
-        eline, fline, aline = fields[0:3]
+        fline, eline, aline = fields[0:3]
+        a2Line = None
         if len(fields) == 4:
             a2line = fields[3]
+            links2 = a2line.split()
 
         links = aline.split()
         e_words = eline.split()
         f_words = fline.split()
-        if a2_file_str != "":
-            links2 = a2line.split()
 
         # Don't generate alignment grids for very large sentences
         if len(e_words) > maxlen or len(f_words) > maxlen:
             continue
-
-        print(f"== SENTENCE {sentenceNumber} ==")
 
         # Initialize alignment objects
         # a holds alignments of user-specified -a1 <file>
@@ -67,13 +65,11 @@ def main(args):
             a[int(i)][int(j)] = 1
 
         # Fill in alignment matrix 2
-        if(a2_file_str != ""):
+        if a2Line is not None:
             for link in links2:
                 i, j = map(int, link.split('-'))
                 a2[i][j] = 1
 
-        # Print filled-in alignment matrix
-        if a2_file_str == "":
             for i, _ in enumerate(f_words):
                 for j, _ in enumerate(e_words):
                     val1 = a[i][j]
@@ -129,19 +125,6 @@ def main(args):
                         elif val1 == 2:
                             print(u'\u001b[44m\u001b[37m1\u001b[0m ', end="")
                 print(f_words[i])
-        nextDefault = sentenceNumber + 1
-        sys.stdout.write("Enter next alignment number or 'q' to quit [%d]: " %(nextDefault))
-        user_input = sys.stdin.readline().strip()
-        if user_input == "":
-            nextRequested = nextDefault
-        elif user_input[0] == "q" or user_input == "quit":
-            sys.exit(1)
-        else:
-            try:
-                nextRequested = int(user_input)
-            except:
-                nextRequested = sentenceNumber + 1
-                sys.stdout.write("Unknown alignment id: %s\nContinuing with %d.\n" %(user_input, nextRequested))
 
 
 if __name__ == "__main__":
