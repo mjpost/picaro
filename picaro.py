@@ -21,38 +21,35 @@ def main(args):
     for sentenceNumber, line in enumerate(sys.stdin):
         fields = line.rstrip().split("\t")
 
-        fline, eline, aline = fields[0:3]
+        src, trg, aline = fields[0:3]
         a2Line = None
         if len(fields) == 4:
             a2line = fields[3]
             links2 = a2line.split()
 
         links = aline.split()
-        e_words = eline.split()
-        f_words = fline.split()
+        src_words = src.split()
+        trg_words = trg.split()
 
         # Don't generate alignment grids for very large sentences
-        if len(e_words) > maxlen or len(f_words) > maxlen:
+        if len(trg_words) > maxlen or len(src_words) > maxlen:
             continue
 
-        # Initialize alignment objects
-        # a holds alignments of user-specified -a1 <file>
-        # a2 holds alignments of user-specified -a2 <file>
         a = defaultdict(lambda: defaultdict(int))
         a2 = defaultdict(lambda: defaultdict(int))
 
-        # Print e_words on the columns
+        # Print source words on the columns
         # First, find the length of the longest word
         longestEWordSize = 0
         longestEWord = 0
-        for w in e_words:
+        for w in trg_words:
             if len(w) > longestEWordSize:
                 longestEWordSize = len(w)
                 longestEWord = w
 
         # Now, print the e-words
         for i in range(longestEWordSize, 0, -1):
-            for w in e_words:
+            for w in trg_words:
                 if len(w) < i:
                     print("  ", end="")
                 else:
@@ -70,8 +67,8 @@ def main(args):
                 i, j = map(int, link.split('-'))
                 a2[i][j] = 1
 
-            for i, _ in enumerate(f_words):
-                for j, _ in enumerate(e_words):
+            for i, _ in enumerate(src_words):
+                for j, _ in enumerate(trg_words):
                     val1 = a[i][j]
                     if val1 == 0:
                         # No link
@@ -83,11 +80,11 @@ def main(args):
                         # Link due to transitive closure
                         # Render as gray-shaded square
                         print('O', end="")
-                print(f_words[i])
+                print(src_words[i])
             print
         else:
-            for i, _ in enumerate(f_words):
-                for j, _ in enumerate(e_words):
+            for i, _ in enumerate(src_words):
+                for j, _ in enumerate(trg_words):
                     val1 = a[i][j]
                     val2 = a2[i][j]
 
@@ -124,7 +121,7 @@ def main(args):
                             print(u'\u001b[1m\u001b[44m\u0020\u001b[0m ', end="")
                         elif val1 == 2:
                             print(u'\u001b[44m\u001b[37m1\u001b[0m ', end="")
-                print(f_words[i])
+                print(src_words[i])
 
 
 if __name__ == "__main__":
