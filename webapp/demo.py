@@ -16,8 +16,12 @@ def align(text):
     source_words = source.split()
     target_words = target.split()
     alignment = [tuple(map(int, point.split("-"))) for point in alignment.split()]
-    data = [["X" if (i, j) in alignment else "" for j in range(len(source_words))] for i, target_word in enumerate(target_words)]
-    df = pd.DataFrame(data, columns=source_words, index=target_words)
+    data = [["X" if (i, j) in alignment else "" for j in range(len(target_words))] for i, source_word in enumerate(source_words)]
+
+    for source_word, row in zip(source_words, data):
+        print(source_word, " ".join([val if val else " " for val in row]))
+
+    df = pd.DataFrame(data, columns=target_words, index=source_words)
     return df.to_html(classes="table table-condensed table-bordered table-hover")
 
 iface = gr.Interface(fn=align, inputs="textbox", outputs="html")
