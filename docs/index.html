@@ -32,56 +32,11 @@
 <body>
     <div class="container">
         <h2>Word Alignment Viewer</h2>
-        <p>Format: "source ||| target ||| alignments"</p>
+        <p>Format: "source [TAB or |||] target [TAB or |||] alignments"</p>
         <p>Example: "the blue house ||| la maison bleue ||| 0-0 1-2 2-1"</p>
         <input type="text" id="input" placeholder="Enter text...">
         <div id="output"></div>
     </div>
-
-    <script>
-        function processAlignment(text) {
-            try {
-                const [source, target, alignment] = text.split(' ||| ');
-                const sourceWords = source.split(' ');
-                const targetWords = target.split(' ');
-                const alignments = new Set(
-                    alignment.split(' ').map(a => a.trim()).filter(a => a)
-                );
-                
-                let table = '<table>';
-                
-                // Header row with target words
-                table += '<tr><td class="cell"></td>';
-                for (let targetWord of targetWords) {
-                    table += `<td class="cell">${targetWord}</td>`;
-                }
-                table += '</tr>';
-                
-                // Create alignment grid
-                for (let i = 0; i < sourceWords.length; i++) {
-                    table += `<tr><td class="cell">${sourceWords[i]}</td>`;
-                    for (let j = 0; j < targetWords.length; j++) {
-                        const isAligned = alignments.has(`${i}-${j}`);
-                        table += `<td class="cell ${isAligned ? 'aligned' : ''}">${isAligned ? 'X' : ''}</td>`;
-                    }
-                    table += '</tr>';
-                }
-                
-                table += '</table>';
-                return table;
-            } catch (error) {
-                return '<p>Invalid input format</p>';
-            }
-        }
-
-        document.getElementById('input').addEventListener('input', function(e) {
-            const text = e.target.value;
-            if (text) {
-                document.getElementById('output').innerHTML = processAlignment(text);
-            } else {
-                document.getElementById('output').innerHTML = '';
-            }
-        });
-    </script>
+    <script src="align.js"></script>
 </body>
 </html>
