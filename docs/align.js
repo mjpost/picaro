@@ -18,7 +18,7 @@ function processAlignment(text) {
         // Header row with target words
         table += '<tr><td class="cell"></td>';
         for (let targetWord of targetWords) {
-            table += `<td class="cell">${targetWord}</td>`;
+            table += `<th><div>${targetWord}</div></th>`;
         }
         table += '</tr>';
         

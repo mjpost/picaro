@@ -3,39 +3,88 @@
 <head>
     <title>Word Alignment Viewer</title>
     <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
         .cell {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #ccc;
+            width: 45px;
+            height: 45px;
+            border: 1px solid #e0e0e0;
             text-align: center;
+            background: white;
         }
         .aligned {
-            background-color: #007bff;
+            background-color: #3b82f6;
             color: white;
+            font-weight: bold;
         }
         table {
             border-collapse: collapse;
             margin-top: 20px;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        th {
+            height: 140px;
+            white-space: nowrap;
+            padding: 0;
+        }
+        th > div {
+            transform: translate(15px, 0) rotate(-45deg);
+            width: 30px;
+            text-align: left;
         }
         input {
             width: 100%;
-            padding: 8px;
-            margin: 10px 0;
+            padding: 12px 16px;
+            margin: 16px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s;
+            background: white;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 900px;
+            margin: 40px auto;
             padding: 20px;
+        }
+        h2 {
+            color: #1f2937;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #6b7280;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Word Alignment Viewer</h2>
-        <p>Format: "source [TAB or |||] target [TAB or |||] alignments"</p>
-        <p>Example: "the blue house ||| la maison bleue ||| 0-0 1-2 2-1"</p>
-        <input type="text" id="input" placeholder="Enter text...">
-        <div id="output"></div>
+        <div class="card">
+            <h2>Word Alignment Viewer</h2>
+            <p>Format: source ||| or TAB target ||| or TAB alignments</p>
+            <p>Example: "the blue house ||| la maison bleue ||| 0-0 1-2 2-1"</p>
+            <input type="text" id="input" placeholder="Enter text..." 
+                   autocomplete="off" spellcheck="false">
+            <div id="output"></div>
+        </div>
     </div>
     <script src="align.js"></script>
 </body>
