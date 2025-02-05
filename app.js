@@ -6,7 +6,9 @@ const WordAligner = () => {
   
   const processAlignment = (text) => {
     try {
-      const [source, target, alignment] = text.split(" ||| ");
+      const [source, target, alignment] = text.includes('|||') ? 
+        text.split(" ||| ") : 
+        text.split("\t");
       const sourceWords = source.split(" ");
       const targetWords = target.split(" ");
       const alignmentPoints = alignment.split(" ").map(point => {
