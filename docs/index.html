@@ -1,13 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Word Alignment Demo</title>
-    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Word Alignment Viewer</title>
+    <style>
+        .cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .aligned {
+            background-color: #007bff;
+            color: white;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script type="module" src="word-aligner.js"></script>
+    <div class="container">
+        <h2>Word Alignment Viewer</h2>
+        <p>Format: "source ||| target ||| alignments"</p>
+        <p>Example: "the blue house ||| la maison bleue ||| 0-0 1-2 2-1"</p>
+        <input type="text" id="input" placeholder="Enter text...">
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function processAlignment(text) {
+            try {
+                const [source, target, alignment] = text.split(' ||| ');
+                const sourceWords = source.split(' ');
+                const targetWords = target.split(' ');
+                const alignments = new Set(
+                    alignment.split(' ').map(a => a.trim()).filter(a => a)
+                );
+                
+                let table = '<table>';
+                
+                // Header row with target words
+                table += '<tr><td class="cell"></td>';
+                for (let targetWord of targetWords) {
+                    table += `<td class="cell">${targetWord}</td>`;
+                }
+                table += '</tr>';
+                
+                // Create alignment grid
+                for (let i = 0; i < sourceWords.length; i++) {
+                    table += `<tr><td class="cell">${sourceWords[i]}</td>`;
+                    for (let j = 0; j < targetWords.length; j++) {
+                        const isAligned = alignments.has(`${i}-${j}`);
+                        table += `<td class="cell ${isAligned ? 'aligned' : ''}">${isAligned ? 'X' : ''}</td>`;
+                    }
+                    table += '</tr>';
+                }
+                
+                table += '</table>';
+                return table;
+            } catch (error) {
+                return '<p>Invalid input format</p>';
+            }
+        }
+
+        document.getElementById('input').addEventListener('input', function(e) {
+            const text = e.target.value;
+            if (text) {
+                document.getElementById('output').innerHTML = processAlignment(text);
+            } else {
+                document.getElementById('output').innerHTML = '';
+            }
+        });
+    </script>
 </body>
 </html>
